@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 
 const Users = () => {
@@ -28,12 +29,13 @@ const Users = () => {
                         <h2><span className="font-bold">Email</span>: {user.email}</h2>
                         <h2><span className="font-bold">Address:</span> {user.address.address}, {user.address.city}</h2>
                         <h2 className="pb-2"><span className="font-bold">Company Name:</span> {user.company.name}</h2>
-                        <button
-                            
+                        <Link
+                            to={`/userDetails/${user.id}`}
                             className="btn btn-primary text-white bg-blue-500 w-full p-2 rounded-lg"
+                            
                         >
                             Details
-                        </button>
+                        </Link>
                         
                     </div>
                 ))}
