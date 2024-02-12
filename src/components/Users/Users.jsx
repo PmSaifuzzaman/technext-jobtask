@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const Users = () => {
     const [allUsers, setAllUsers] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         fetch("./users.json")
@@ -12,14 +13,36 @@ const Users = () => {
             .then((data) => setAllUsers(data));
     }, []);
 
+    // Filter users based on search query
+    const filteredUsers = allUsers.filter((user) =>
+        user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(searchQuery.toLowerCase())  ||
+        user.username.toLowerCase().includes(searchQuery.toLowerCase())  
+    );
 
+    // Handle input change for search query
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
 
     return (
         <div>
             <h1 className="text-5xl font-bold text-center my-5">Users: {allUsers.length} </h1>
+            <div>
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Search by user's name"
+                        className="input border-blue-500 w-full max-w-xs"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                    />
+                    <button className="btn bg-blue-500 text-white">Search</button>
+                </div>
+            </div>
             <div className="card-container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {/* Map all courses dinamically */}
-                {allUsers.map((user) => (
+                {/* Map all users dinamically */}
+                {filteredUsers.map((user) => (
                     <div key={user.id} className="card  bg-base-100 shadow-xl rounded-xl p-4">
                         <img src={user.image} alt="avater" />
                         <div className="flex justify-between py-2">
@@ -32,11 +55,11 @@ const Users = () => {
                         <Link
                             to={`/userDetails/${user.id}`}
                             className="btn btn-primary text-white bg-blue-500 w-full p-2 rounded-lg"
-                            
+
                         >
                             Details
                         </Link>
-                        
+
                     </div>
                 ))}
             </div>
