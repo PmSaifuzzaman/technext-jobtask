@@ -53,6 +53,18 @@ const UserDetails = () => {
                     <p><span className="font-bold">Currency:</span> {user.bank?.currency}</p>
                     <p><span className="font-bold">IBAN:</span> {user.bank?.iban}</p>
                 </div>
+                <div>
+                    <p><span className="font-bold text-2xl underline flex justify-center">Company Information</span></p>
+                    <p><span className="font-bold text-2xl ">Address</span></p>
+                    <p><span className="font-bold">Address:</span> {user.company?.address?.address}</p>
+                    <p><span className="font-bold">City:</span> {user.company?.address?.city}</p>
+                    <p><span className="font-bold">Latitude:</span> {user.company?.address?.coordinates?.lat}</p>
+                    <p><span className="font-bold">Longitude:</span> {user.company?.address?.coordinates?.lng}</p>
+                    <p><span className="font-bold">Department:</span> {user.company?.department}</p>
+                    <p><span className="font-bold">Name:</span> {user.company?.name}</p>
+                    <p><span className="font-bold">Title:</span> {user.company?.title}</p>
+
+                </div>
             </div>
         </div>
     );
