@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
 
 
 const Users = () => {
@@ -8,6 +9,7 @@ const Users = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [sortBy, setSortBy] = useState("");
 
+    // Load data
     useEffect(() => {
         fetch("./users.json")
             .then((res) => res.json())
@@ -46,9 +48,9 @@ const Users = () => {
 
     return (
         <div>
-            <h1 className="text-5xl font-bold text-center my-5">Users: {allUsers.length} </h1>
-            <div className="flex justify-between">
-                <div >
+            <h1 className="text-5xl font-bold text-center my-5">Total Users: {allUsers.length} </h1>
+            <div className="flex gap-2 justify-between mb-5">
+                <div className=" relative flex items-center" >
                     <input
                         type="text"
                         placeholder="Search by user's name"
@@ -56,10 +58,10 @@ const Users = () => {
                         value={searchQuery}
                         onChange={handleSearchChange}
                     />
-                    <button className="btn bg-blue-500 text-white">Search</button>
+                    <button className="absolute right-3 top-3 mt-1 ml-[-2] hidden md:block"><FaSearch/></button>
                 </div>
                 <div>
-                    <select className="select select-bordered w-full max-w-xs" onChange={handleSortChange}>
+                    <select className="select select-bordered w-full max-w-xs border-blue-500" onChange={handleSortChange}>
                         <option disabled selected>Sort the users...</option>
                         <option value="name">Sort by name</option>
                         <option value="email">Sort by email</option>
@@ -70,8 +72,9 @@ const Users = () => {
             <div className="card-container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {/* Map all users dinamically */}
                 {sortedUsers.map((user) => (
-                    <div key={user.id} className="card  bg-base-100 shadow-xl rounded-xl p-4">
+                    <div key={user.id} className="card  bg-base-100  rounded-lg shadow-2xl p-4">
                         <img src={user.image} alt="avater" />
+                        <Link to={`/userDetails/${user.id}`} className="pt-2"><span className="font-bold">User Name</span>: {user.username}</Link>
                         <div className="flex justify-between py-2">
                             <p><span className="font-bold">First Name:</span> {user.firstName}</p>
                             <p><span className="font-bold">Last Name:</span> {user.lastName}</p>
