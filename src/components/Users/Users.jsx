@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 const Users = () => {
     const [allUsers, setAllUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [sortBy, setSortBy] = useState("");
 
     useEffect(() => {
         fetch("./users.json")
@@ -16,20 +17,38 @@ const Users = () => {
     // Filter users based on search query
     const filteredUsers = allUsers.filter((user) =>
         user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.lastName.toLowerCase().includes(searchQuery.toLowerCase())  ||
-        user.username.toLowerCase().includes(searchQuery.toLowerCase())  
+        user.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.username.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    // Sort filteredUsers based on sortBy state
+    const sortedUsers = filteredUsers.sort((a, b) => {
+        if (sortBy === "name") {
+            return a.firstName.localeCompare(b.firstName);
+        } else if (sortBy === "email") {
+            return a.email.localeCompare(b.email);
+        } else if (sortBy === "company") {
+            return a.company.name.localeCompare(b.company.name);
+        }
+        return 0;
+    });
 
     // Handle input change for search query
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
     };
 
+    // Handle select change for sorting
+    const handleSortChange = (event) => {
+        setSortBy(event.target.value);
+    };
+
+
     return (
         <div>
             <h1 className="text-5xl font-bold text-center my-5">Users: {allUsers.length} </h1>
-            <div>
-                <div>
+            <div className="flex justify-between">
+                <div >
                     <input
                         type="text"
                         placeholder="Search by user's name"
@@ -39,10 +58,18 @@ const Users = () => {
                     />
                     <button className="btn bg-blue-500 text-white">Search</button>
                 </div>
+                <div>
+                    <select className="select select-bordered w-full max-w-xs" onChange={handleSortChange}>
+                        <option disabled selected>Sort the users...</option>
+                        <option value="name">Sort by name</option>
+                        <option value="email">Sort by email</option>
+                        <option value="company">Sort by Company name</option>
+                    </select>
+                </div>
             </div>
             <div className="card-container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {/* Map all users dinamically */}
-                {filteredUsers.map((user) => (
+                {sortedUsers.map((user) => (
                     <div key={user.id} className="card  bg-base-100 shadow-xl rounded-xl p-4">
                         <img src={user.image} alt="avater" />
                         <div className="flex justify-between py-2">
